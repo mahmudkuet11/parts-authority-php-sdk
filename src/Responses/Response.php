@@ -6,6 +6,7 @@
 namespace Mahmud\PartsAuthority\Responses;
 
 
+use Illuminate\Support\Arr;
 use Mahmud\PartsAuthority\Exceptions\AuthenticationException;
 
 class Response {
@@ -19,14 +20,14 @@ class Response {
      * @return bool
      */
     public function isSuccessful() {
-        return $this->jsonArray['responseStatus'] === 'Success';
+        return Arr::get($this->jsonArray, "responseStatus") === 'Success';
     }
     
     /**
      * @throws AuthenticationException
      */
     public function handleAuthentication() {
-        if (! $this->isSuccessful() && $this->jsonArray['responseDetail'] === 'Authentication Failure') {
+        if (! $this->isSuccessful() && Arr::get($this->jsonArray, "responseDetail") === 'Authentication Failure') {
             throw new AuthenticationException();
         }
     }

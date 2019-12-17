@@ -6,12 +6,14 @@
 namespace Mahmud\PartsAuthority;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Mahmud\PartsAuthority\Exceptions\AuthenticationException;
 use Mahmud\PartsAuthority\Requests\OrderHeader;
 use Mahmud\PartsAuthority\Requests\OrderItem;
 use Mahmud\PartsAuthority\Responses\CheckStockResponse;
 use Mahmud\PartsAuthority\Responses\EnterOrderResponse;
+use Mahmud\PartsAuthority\Responses\GetOrderInformationResponse;
 use Mahmud\PartsAuthority\Utils\Stock;
 
 class PartsAuthority {
@@ -76,6 +78,30 @@ class PartsAuthority {
             "userName"   => $this->username,
             "userPass"   => $this->password,
         ];
+    }
+    
+    /**
+     * @param $poNumber
+     *
+     * @return mixed
+     * @throws AuthenticationException
+     * @throws Exceptions\InvalidPoException
+     * @throws \JsonMapper_Exception
+     */
+    public function getOrderInformation($poNumber) {
+        $response = $this->getClient()->request('GET', 'api/checkOrderStatus.psp', [
+            'query' => [
+                'reqData' => json_encode($this->getRequestCredential() + [
+                        "action"   => "getOrderInformation",
+                        "PoNumber" => $poNumber
+                    ])
+            ]
+        ]);
+        
+        $getOrderInformationResponse = new GetOrderInformationResponse($response->getBody()->getContents());
+        $getOrderInformationResponse->handleFailure();
+        
+        return Arr::first($getOrderInformationResponse->getOrderInformation());
     }
     
     /**
