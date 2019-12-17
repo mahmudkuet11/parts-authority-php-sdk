@@ -11,6 +11,7 @@ use Mahmud\PartsAuthority\PartsAuthoritySandbox;
 use Mahmud\PartsAuthority\Requests\OrderHeader;
 use Mahmud\PartsAuthority\Requests\OrderItem;
 use Mahmud\PartsAuthority\Tests\TestCase;
+use Mahmud\PartsAuthority\Utils\ShippingMethodsEnum;
 
 class EnterOrderTest extends TestCase {
     /**
@@ -20,7 +21,7 @@ class EnterOrderTest extends TestCase {
         $partsAuthority = PartsAuthoritySandbox::make('invalid_account_no', 'invalid_username', 'invalid_pass');
         $this->expectException(AuthenticationException::class);
         $orderHeader = new OrderHeader("JOHN DOE", "123456789012", "123 ANY STREET", "APT 1A",
-            "ANYWHERE", "ZZ", "12345", "US", "FDH");
+            "ANYWHERE", "ZZ", "12345", "US", ShippingMethodsEnum::FEDEX_HOME_DELIVERY);
         $orderItems = [
             new OrderItem("AA", "test_part", 1)
         ];
