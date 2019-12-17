@@ -3,7 +3,7 @@
  * Created by MD. Mahmud Ur Rahman <mahmudkuet11@gmail.com>.
  */
 
-namespace Mahmud\PartsAuthority\Tests;
+namespace Mahmud\PartsAuthority\Tests\Feature;
 
 
 use Mahmud\PartsAuthority\PartsAuthority;

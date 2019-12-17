@@ -8,6 +8,8 @@ namespace Mahmud\PartsAuthority;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Mahmud\PartsAuthority\Exceptions\AuthenticationException;
+use Mahmud\PartsAuthority\Responses\CheckStockResponse;
+use Mahmud\PartsAuthority\Utils\Stock;
 
 class PartsAuthority {
     private $accountNumber;
@@ -32,7 +34,10 @@ class PartsAuthority {
      * @param $lineCode
      * @param $partNumber
      *
+     * @return Stock
      * @throws AuthenticationException
+     * @throws \JsonMapper_Exception
+     * @throws Exceptions\NoMatchingPartException
      */
     public function getStock($lineCode, $partNumber) {
         $response = $this->getClient()->request('GET', 'api/orderEntry.psp', [
@@ -44,10 +49,11 @@ class PartsAuthority {
                     ])
             ]
         ]);
-        $response = json_decode($response->getBody()->getContents(), true);
-        if ($response['responseStatus'] === 'Failed' && $response['responseDetail'] === 'Authentication Failure') {
-            throw new AuthenticationException();
-        }
+        
+        $checkStockResponse = new CheckStockResponse($response->getBody()->getContents());
+        $checkStockResponse->handleFailure();
+        
+        return $checkStockResponse->getStock();
     }
     
     protected function getClient() {
@@ -66,7 +72,6 @@ class PartsAuthority {
             "client"     => "ExampleClient V1",
             "userName"   => $this->username,
             "userPass"   => $this->password,
-        
         ];
     }
 }

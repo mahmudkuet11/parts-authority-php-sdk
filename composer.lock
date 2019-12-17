@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2cdeddb3b44bd4295c403a7c8d295a2",
+    "content-hash": "f8c561fa77d269691b50c34164d5111b",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -436,6 +436,52 @@
                 "time"
             ],
             "time": "2019-11-20T06:59:06+00:00"
+        },
+        {
+            "name": "netresearch/jsonmapper",
+            "version": "v1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cweiske/jsonmapper.git",
+                "reference": "0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cweiske/jsonmapper/zipball/0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06",
+                "reference": "0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-pcre": "*",
+                "ext-reflection": "*",
+                "ext-spl": "*",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8.35 || ~5.7 || ~6.4",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "JsonMapper": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Weiske",
+                    "email": "cweiske@cweiske.de",
+                    "homepage": "http://github.com/cweiske/jsonmapper/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Map nested JSON structures onto PHP classes",
+            "time": "2019-08-15T19:41:25+00:00"
         },
         {
             "name": "psr/container",
@@ -2293,7 +2339,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.1.3"
+        "php": "^7.1.3",
+        "ext-json": "*"
     },
     "platform-dev": []
 }
