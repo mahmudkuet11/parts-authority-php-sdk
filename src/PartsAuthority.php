@@ -14,6 +14,7 @@ use Mahmud\PartsAuthority\Requests\OrderItem;
 use Mahmud\PartsAuthority\Responses\CheckStockResponse;
 use Mahmud\PartsAuthority\Responses\EnterOrderResponse;
 use Mahmud\PartsAuthority\Responses\GetOrderInformationResponse;
+use Mahmud\PartsAuthority\Responses\OrderShippingDetailResponse;
 use Mahmud\PartsAuthority\Utils\Stock;
 
 class PartsAuthority {
@@ -134,5 +135,19 @@ class PartsAuthority {
     
     public function getStatus() {
         return 'live';
+    }
+    
+    public function getOrderShippingDetail($poNumber) {
+        $response = $this->getClient()->request('GET', 'api/checkOrderStatus.psp', [
+            'query' => [
+                'reqData' => json_encode($this->getRequestCredential() + [
+                        "action"   => "getOrderShippingDetail",
+                        "PoNumber" => $poNumber
+                    ])
+            ]
+        ]);
+        $orderShippingDetailResponse = new OrderShippingDetailResponse($response->getBody()->getContents());
+        
+        return $orderShippingDetailResponse;
     }
 }
