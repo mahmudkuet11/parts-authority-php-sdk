@@ -16,7 +16,7 @@ class EnterOrderResponse extends Response {
     public function handleFailure() {
         parent::handleFailure();
         
-        if(! $this->isSuccessful()){
+        if (!$this->isSuccessful()) {
             throw new EnterOrderFailureException();
         }
     }

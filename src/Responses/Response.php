@@ -17,25 +17,25 @@ class Response {
     }
     
     /**
-     * @return bool
+     * @throws AuthenticationException
      */
-    public function isSuccessful() {
-        return Arr::get($this->jsonArray, "responseStatus") === 'Success';
+    public function handleFailure() {
+        $this->handleAuthentication();
     }
     
     /**
      * @throws AuthenticationException
      */
     public function handleAuthentication() {
-        if (! $this->isSuccessful() && Arr::get($this->jsonArray, "responseDetail") === 'Authentication Failure') {
+        if (!$this->isSuccessful() && Arr::get($this->jsonArray, "responseDetail") === 'Authentication Failure') {
             throw new AuthenticationException();
         }
     }
     
     /**
-     * @throws AuthenticationException
+     * @return bool
      */
-    public function handleFailure() {
-        $this->handleAuthentication();
+    public function isSuccessful() {
+        return Arr::get($this->jsonArray, "responseStatus") === 'Success';
     }
 }

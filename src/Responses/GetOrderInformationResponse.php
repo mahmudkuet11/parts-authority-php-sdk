@@ -27,8 +27,8 @@ class GetOrderInformationResponse extends Response {
     public function handleFailure() {
         parent::handleFailure();
         
-        if(! $this->isSuccessful()){
-            if(\Illuminate\Support\Arr::get($this->jsonArray, 'responseDetail') == "Invalid PO"){
+        if (!$this->isSuccessful()) {
+            if (\Illuminate\Support\Arr::get($this->jsonArray, 'responseDetail') == "Invalid PO") {
                 throw new InvalidPoException();
             }
         }

@@ -27,8 +27,8 @@ class CheckStockResponse extends Response {
     public function handleFailure() {
         parent::handleFailure();
         
-        if(! $this->isSuccessful()){
-            if(\Illuminate\Support\Arr::get($this->jsonArray, 'responseDetail.err_description') === 'No matching parts found'){
+        if (!$this->isSuccessful()) {
+            if (\Illuminate\Support\Arr::get($this->jsonArray, 'responseDetail.err_description') === 'No matching parts found') {
                 throw new NoMatchingPartException();
             }
         }
