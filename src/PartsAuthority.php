@@ -8,7 +8,10 @@ namespace Mahmud\PartsAuthority;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Mahmud\PartsAuthority\Exceptions\AuthenticationException;
+use Mahmud\PartsAuthority\Requests\OrderHeader;
+use Mahmud\PartsAuthority\Requests\OrderItem;
 use Mahmud\PartsAuthority\Responses\CheckStockResponse;
+use Mahmud\PartsAuthority\Responses\EnterOrderResponse;
 use Mahmud\PartsAuthority\Utils\Stock;
 
 class PartsAuthority {
@@ -73,5 +76,37 @@ class PartsAuthority {
             "userName"   => $this->username,
             "userPass"   => $this->password,
         ];
+    }
+    
+    /**
+     * @param OrderHeader $orderHeader
+     * @param OrderItem[] $orderItems
+     *
+     * @return bool
+     * @throws AuthenticationException
+     * @throws Exceptions\EnterOrderFailureException
+     */
+    public function enterOrder(OrderHeader $orderHeader, array $orderItems) {
+        $orderItems = collect($orderItems)->map(function (OrderItem $orderItem) {
+            return $orderItem->toArray();
+        });
+        $response = $this->getClient()->request('GET', 'api/orderEntry.psp', [
+            'query' => [
+                'reqData' => json_encode($this->getRequestCredential() + [
+                        "action"      => "enterOrder",
+                        "orderHeader" => $orderHeader->toArray() + ['status' => $this->getStatus()],
+                        "orderItems"  => $orderItems
+                    ])
+            ]
+        ]);
+        
+        $enterOrderResponse = new EnterOrderResponse($response->getBody()->getContents());
+        $enterOrderResponse->handleFailure();
+        
+        return true;
+    }
+    
+    public function getStatus() {
+        return 'live';
     }
 }

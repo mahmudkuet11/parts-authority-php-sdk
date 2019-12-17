@@ -14,4 +14,8 @@ class PartsAuthoritySandbox extends PartsAuthority {
     public function getBaseUrl() {
         return "http://localhost:8000";
     }
+    
+    public function getStatus() {
+        return 'test';
+    }
 }

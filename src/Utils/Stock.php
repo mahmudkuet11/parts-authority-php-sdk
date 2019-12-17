@@ -108,7 +108,7 @@ class Stock {
      * @return bool
      */
     public function isAvailable() {
-        if($this->instock > 0){
+        if ($this->instock > 0) {
             return true;
         }
         
