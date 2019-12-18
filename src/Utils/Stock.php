@@ -105,10 +105,12 @@ class Stock {
     }
     
     /**
+     * @param int $quantity
+     *
      * @return bool
      */
-    public function isAvailable() {
-        if ($this->instock > 0) {
+    public function isAvailable($quantity = 1) {
+        if ($this->instock >= $quantity) {
             return true;
         }
         
