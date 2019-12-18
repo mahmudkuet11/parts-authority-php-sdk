@@ -1,5 +1,5 @@
 {
-    "name": "mahmud/parts-authority",
+    "name": "mahmud/parts-authority-php-sdk",
     "description": "PHP SDK for Parts Authority API",
     "type": "library",
     "license": "MIT",
