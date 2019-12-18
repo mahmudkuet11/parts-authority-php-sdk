@@ -137,6 +137,12 @@ class PartsAuthority {
         return 'live';
     }
     
+    /**
+     * @param $poNumber
+     *
+     * @return OrderShippingDetailResponse
+     * @throws AuthenticationException
+     */
     public function getOrderShippingDetail($poNumber) {
         $response = $this->getClient()->request('GET', 'api/checkOrderStatus.psp', [
             'query' => [
@@ -147,6 +153,7 @@ class PartsAuthority {
             ]
         ]);
         $orderShippingDetailResponse = new OrderShippingDetailResponse($response->getBody()->getContents());
+        $orderShippingDetailResponse->handleFailure();
         
         return $orderShippingDetailResponse;
     }

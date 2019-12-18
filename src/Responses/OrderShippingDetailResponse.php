@@ -7,6 +7,7 @@ namespace Mahmud\PartsAuthority\Responses;
 
 
 use Illuminate\Support\Arr;
+use Mahmud\PartsAuthority\Exceptions\InvalidPoException;
 use Mahmud\PartsAuthority\Utils\ShippingPackage;
 
 class OrderShippingDetailResponse extends Response {
@@ -18,5 +19,15 @@ class OrderShippingDetailResponse extends Response {
         $map = new \JsonMapper();
         $shippingPackages = $map->mapArray(\Mahmud\PartsAuthority\Utils\Arr::toObject(Arr::get($this->jsonArray, 'ShippingInfo')), [], ShippingPackage::class);
         return $shippingPackages;
+    }
+    
+    public function handleFailure() {
+        parent::handleFailure();
+        
+        if (!$this->isSuccessful()) {
+            if (Arr::get($this->jsonArray, 'responseDetail') == "Invalid PO") {
+                throw new InvalidPoException();
+            }
+        }
     }
 }

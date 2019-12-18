@@ -6,6 +6,9 @@
 namespace Mahmud\PartsAuthority\Tests\Feature;
 
 
+use Mahmud\PartsAuthority\Exceptions\AuthenticationException;
+use Mahmud\PartsAuthority\Exceptions\InvalidPoException;
+use Mahmud\PartsAuthority\PartsAuthoritySandbox;
 use Mahmud\PartsAuthority\Responses\OrderShippingDetailResponse;
 use Mahmud\PartsAuthority\Tests\TestCase;
 use Mahmud\PartsAuthority\Utils\ShippingPackage;
@@ -36,5 +39,26 @@ class OrderShippingDetailTest extends TestCase {
         $this->assertEquals([
             ['carrier' => 'FedEx', 'tracking_number' => '74899992240822250759'],
         ], $actual);
+    }
+    
+    /**
+     * @test
+     */
+    public function it_throws_exception_if_po_number_is_invalid() {
+        $pa = $this->getPartsAuthorityInstance();
+        
+        $this->expectException(InvalidPoException::class);
+        
+        $pa->getOrderShippingDetail("invalid_po");
+    }
+    
+    /**
+     * @test
+     */
+    public function it_throws_authentication_exception_if_invalid_credential_is_provided() {
+        $partsAuthority = PartsAuthoritySandbox::make('invalid_account_no', 'invalid_username', 'invalid_pass');
+        $this->expectException(AuthenticationException::class);
+        
+        $partsAuthority->getOrderShippingDetail("PC1-test-999999998");
     }
 }
