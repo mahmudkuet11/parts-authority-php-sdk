@@ -22,18 +22,22 @@ class PartsAuthority {
     private $username;
     private $password;
     
-    protected function __construct($accountNumber, $username, $password) {
+    protected $baseUrl;
+    
+    protected function __construct($accountNumber, $username, $password, $baseUrl) {
         $this->accountNumber = $accountNumber;
         $this->username = $username;
         $this->password = $password;
+        
+        $this->baseUrl = $baseUrl;
     }
     
-    public static function make($accountNumber, $username, $password) {
+    public static function make($accountNumber, $username, $password, $baseUrl = "http://eorders.panetny.com") {
         if ($accountNumber === '11111' && $username === 'test_user' && $password === 'test_password') {
-            return new PartsAuthoritySandbox($accountNumber, $username, $password);
+            return new PartsAuthoritySandbox($accountNumber, $username, $password, $baseUrl);
         }
         
-        return new self($accountNumber, $username, $password);
+        return new self($accountNumber, $username, $password, $baseUrl);
     }
     
     /**
@@ -69,7 +73,7 @@ class PartsAuthority {
     }
     
     public function getBaseUrl() {
-        return "http://eorders.panetny.com";
+        return $this->baseUrl;
     }
     
     protected function getRequestCredential() {

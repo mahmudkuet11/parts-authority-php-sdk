@@ -7,12 +7,8 @@ namespace Mahmud\PartsAuthority;
 
 
 class PartsAuthoritySandbox extends PartsAuthority {
-    public static function make($accountNumber, $username, $password) {
-        return new self($accountNumber, $username, $password);
-    }
-    
-    public function getBaseUrl() {
-        return "http://localhost:8000";
+    public static function make($accountNumber, $username, $password, $baseUrl = "http://localhost:8000") {
+        return new self($accountNumber, $username, $password, $baseUrl);
     }
     
     public function getStatus() {
