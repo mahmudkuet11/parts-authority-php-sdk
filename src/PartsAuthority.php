@@ -34,7 +34,7 @@ class PartsAuthority {
     
     public static function make($accountNumber, $username, $password, $baseUrl = "http://eorders.panetny.com") {
         if ($accountNumber === '11111' && $username === 'test_user' && $password === 'test_password') {
-            return new PartsAuthoritySandbox($accountNumber, $username, $password, $baseUrl);
+            return PartsAuthoritySandbox::make($accountNumber, $username, $password);
         }
         
         return new self($accountNumber, $username, $password, $baseUrl);
